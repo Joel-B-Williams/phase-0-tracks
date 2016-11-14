@@ -1,0 +1,49 @@
+-Stand in front of elevator doors
+-Until viable answer given:
+	-Ask which floor to go to
+	-Wait 3 seconds
+-If desired floor == current floor:
+	-Respond "We are on that floor"
+-Elif desired floor > current floor:
+	-Press up button
+-Else press down button
+-When elevator doors open:
+	-Allow any current passengers to disembark
+	-Enter elevator
+	-Interact with terminal; select button value == desired floor
+-When desired floor reached:
+	-Allow any current passengers to disembark
+	-Exit elevator
+
+
+	How to make super-delcious chocolate chip cookies (you're welcome)
+
+	-Until own_kitchenaide_mixer == True
+		-buy a kitchenaide mixer
+	-Turn on oven to 375(f)
+	-Place 1 stick softened butter into mixing bowl
+	-Turn on to speed 3 for 30 seconds
+	-Turn on to speed (max) for 3 minutes
+	-Turn off mixer
+	-Place .5c brown sugar AND .25c white sugar into mixing bowl
+	-Turn on to speed 3 for 30 seconds
+	-Turn on to speed (max) for 3 minutes
+	-Turn off mixer
+	-Crack one egg into mixing bowl
+		-If shell in bowl, remove
+	-Place 1tsp vanilla into mixing bowl
+	-Turn on to speed 3 for 30 seconds
+	-Turn on to speed (max) for 60 seconds
+	-Turn off mixer
+	-Place 1.125c flour AND .5tsp salt AND .5tsp baking soda into mixing bowl
+	-Turn on to speed (min) for 60 seconds
+	-Place 1c chocolate chips into bowl
+	-Continue mixing for 30 seconds
+	-Turn off mixer
+	-Line 12"x18" baking sheet with parchment paper
+	-Use uniform scoop to place cookies on baking sheet; padding: scoop_radius;
+	-Place cookie sheet in oven for 8 minutes
+	-Rotate baking sheet 180 degrees, wait 4 more minutes
+	-Remove baking sheet from oven
+	-Move cookies/parchment to cooling rack
+	-When desired coolness reached, devour with impunity
