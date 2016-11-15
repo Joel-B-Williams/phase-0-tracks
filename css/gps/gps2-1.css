@@ -1,3 +1,43 @@
-body {
-	background-color: beige;
+header {
+	width: 50%;
+	margin: auto;
+	text-align: center;
+	font-style: italic;
+	border-bottom: solid black 3px;
 }
+
+header > p {
+	font-size: .8em;
+}
+
+footer {
+	padding-top: 10px;
+	clear: both;
+	text-align: center;
+	border-top: solid black 3px;
+	font-size: .8em;
+	font-style: italic;
+}
+
+.column-1{
+	
+	float: left;
+	width: 45%;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 15px;
+	border-right: solid black 3px;
+	
+	
+}
+
+.column-2 {
+	
+	float: right;
+	width: 45%;
+	padding-bottom: 15px;
+
+	
+	
+}
+
