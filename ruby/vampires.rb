@@ -45,6 +45,7 @@ def interview
 		end
 		puts is_vampire
 	end
+	puts "JK LOL is all good we cool bro 10/10 would hire."
 end
 
 for i in 0...new_employees
