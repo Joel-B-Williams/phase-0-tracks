@@ -19,6 +19,11 @@ footer {
 	font-style: italic;
 }
 
+h1, h2 {
+	font-family: courier;
+}
+
+
 .column-1{
 	
 	float: left;
@@ -27,17 +32,32 @@ footer {
 	padding-right: 15px;
 	padding-bottom: 15px;
 	border-right: solid black 3px;
-	
-	
+	background-color: grey;	
 }
 
 .column-2 {
 	
 	float: right;
 	width: 45%;
-	padding-bottom: 15px;
-
-	
-	
+	padding-left: 15px;
+	padding-bottom: 15px;	
 }
 
+a:link {
+	font-family: cursive;
+	text-decoration: none;
+	color: black;
+}
+
+a:visited {
+	color: black;
+}
+
+a:hover {
+	font-weight: bold;
+}
+
+a:active {
+	font-weight: bold;
+	font-style: italic;
+}
