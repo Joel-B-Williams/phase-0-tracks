@@ -18,15 +18,15 @@ def interview
 		puts "What is your name?"
 		emp_name = gets.chomp
 		puts "How old are you?"
-		age = gets.chomp
+		age = gets.chomp.to_i
 		puts "What year were you born?"
-		birth_year = gets.chomp
+		birth_year = gets.chomp.to_i
 		puts "Would you like some garlic bread?"
 		likes_garlic = gets[0] == "y"
 		puts "Do you want health insurance?"
 		wants_insurance = gets[0] == "y"
 
-		age_right = (2016 - age.to_i) == birth_year.to_i
+		age_right = (2016 - age) == birth_year
 
 		if age_right && (likes_garlic || wants_insurance)
 			is_vampire = "Probably not a vampire."
