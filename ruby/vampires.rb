@@ -28,7 +28,7 @@ def interview
 		puts "Do you want health insurance?"
 		wants_insurance = gets[0] == "y"
 
-		age_right = (2016 - age) == birth_year
+		age_right = (Time.now.year - age) == birth_year
 
 		if age_right && (likes_garlic || wants_insurance)
 			is_vampire = "Probably not a vampire."
