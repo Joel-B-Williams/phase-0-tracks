@@ -30,4 +30,16 @@ def create_alias(first_name, last_name)
 	nickname<<jumble(first_name).capitalize
 end
 
-puts create_alias("Joel","Williams")
+puts "That you agent?"
+puts ""
+until gets.chomp == "quit"
+	puts "What is your last name, agent?"
+	agent_last = gets.chomp
+	puts "Agent #{agent_last}?  Sheesh, like I haven't heard that one.  First name?"
+	agent_first = gets.chomp
+	agent_alias = create_alias(agent_first, agent_last)
+	puts "You'll get a belly full'a lead in no time flat goin' by a name like that..."
+	puts "Tell ya what, you can be #{agent_alias}.  Yeah, that'll do."
+	puts ""
+	puts "Got a friend with you there?  Step on up. ('quit' to exit)"
+end
