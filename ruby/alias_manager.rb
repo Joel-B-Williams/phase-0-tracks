@@ -1,9 +1,3 @@
-def create_alias(first_name, last_name)
-	nickname = ""
-	first = ""
-	last = ""
-end
-
 def jumble(name)
 	vowels = "aeiou"
 	consonants = "bcdfghjklmnpqrstvwxyz"
@@ -15,8 +9,8 @@ def jumble(name)
 			if letter == "u"
 				jumbled_name<<"a"
 			else
-			end
 				jumbled_name<<vowels[vowels.index(letter)+1]
+			end
 		elsif consonants.include?(letter)
 			if letter == "z"
 				jumbled_name<<"b"
@@ -30,6 +24,10 @@ def jumble(name)
 	jumbled_name
 end
 
-puts jumble("abc")
-puts jumble("abcdefg hijklmnop")
-puts jumble("Joel Williams")
+def create_alias(first_name, last_name)
+	nickname = jumble(last_name).capitalize
+	nickname<<" "
+	nickname<<jumble(first_name).capitalize
+end
+
+puts create_alias("Joel","Williams")
