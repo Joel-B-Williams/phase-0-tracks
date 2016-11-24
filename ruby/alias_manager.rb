@@ -1,3 +1,7 @@
+# for vowels/consonants - compare letter to v/c index
+# 	return index+1
+# 	edges - u, z , spaces
+
 def jumble(name)
 	vowels = "aeiou"
 	consonants = "bcdfghjklmnpqrstvwxyz"
@@ -24,10 +28,10 @@ def jumble(name)
 	jumbled_name
 end
 
+# alias = jumbled last name + space + first name
+
 def create_alias(first_name, last_name)
-	nickname = jumble(last_name).capitalize
-	nickname<<" "
-	nickname<<jumble(first_name).capitalize
+	nickname = jumble(last_name).capitalize + " " + jumble(first_name).capitalize
 end
 
 puts "That you agent?"
