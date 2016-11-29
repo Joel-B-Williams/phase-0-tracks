@@ -30,26 +30,36 @@
 
 def create_list(items)
 	grocery_list = {}
-	each_item = items.split(" ")
-	each_item.each {|item| grocery_list[item] = 1}
+	individual_item = items.split(" ")
+	individual_item.each {|item| grocery_list[item] = 1}
 	puts grocery_list #replace with method for fancy printing
+	grocery_list
 end
 
-def add_item(item, quantity)
-	grocery_list[item]=quantity
-	puts grocery_list #replace with method for fancy printing
+def add_item(list, item, quantity)
+	list[item] = quantity
+	puts list #replace with method for fancy printing
 end
 
-def remove_item(item)
-	grocery_list.delete(item)
-	puts grocery_list #replace with method for fancy printing
+def remove_item(list, item)
+	list.delete(item)
+	puts list #replace with method for fancy printing
 end
 
-def change_quantity(item, quantity)
-	grocery_list[item]=quantity
-	puts grocery_list #replace with method for fancy printing
+def change_quantity(list, item, quantity)
+	list[item] = quantity
+	puts list #replace with method for fancy printing
 end
 
-def print_nicely(grocery-list)
-	grocery_list.each {|item, quantity| puts "Buy #{quantity} #{item}(s)."}
+def print_nicely(new_list)
+	new_list.each {|item, quantity| puts "Buy #{quantity} #{item}."}
 end
+
+my_list = create_list("carrots apples cereal pizza")
+add_item(my_list, "Lemonade", 2)
+add_item(my_list, "Tomatoes", 3)
+add_item(my_list, "Onions", 1)
+add_item(my_list, "Ice Cream", 4)
+remove_item(my_list, "Lemonade")
+change_quantity(my_list, "Ice Cream", 1)
+print_nicely(my_list)
