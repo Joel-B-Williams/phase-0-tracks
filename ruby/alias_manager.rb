@@ -2,25 +2,29 @@
 # 	return index+1
 # 	edges - u, z , spaces
 
+#generic method to iterate through given string and return next index
+# - check if it's in vowels or consonants
+# - replace current interative loop with the vowel/consonant as argument
+# def return_next(letter, letters, recepticalgit br)
+# 	receptical<<letters[letters.index(letter)+1]
+# end
+
+
+
 def jumble(name)
 	vowels = "aeiou"
 	consonants = "bcdfghjklmnpqrstvwxyz"
 	jumbled_name = ""
 	#for each letter in name (lower), return index+1 to jumbled (watch edges)
-	name.downcase.chars.each do |letter|
-		jumbled_name<<" " if letter == " "
-		if vowels.include?(letter)
-			if letter == "u"
-				jumbled_name<<"a"
-			else
-				jumbled_name<<vowels[vowels.index(letter)+1]
-			end
+	name.downcase.chars.each do |letter|	
+		if letter == "u"
+			jumbled_name<<"a"
+		elsif letter == "z"
+			jumbled_name<<"b"
 		elsif consonants.include?(letter)
-			if letter == "z"
-				jumbled_name<<"b"
-			else
-				jumbled_name<<consonants[consonants.index(letter)+1]
-			end
+			jumbled_name<<consonants[consonants.index(letter)+1]
+		elsif vowels.include?(letter)
+			jumbled_name<<vowels[vowels.index(letter)+1]		
 		else
 			jumbled_name<<letter
 		end
@@ -49,3 +53,4 @@ until gets.chomp == "quit"
 end
 
 little_black_book.each {|fake, real| puts "Agent #{real[0]} #{real[1]} is going by the name of #{fake}."}
+
