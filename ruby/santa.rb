@@ -1,11 +1,12 @@
 class Santa
-	
+	attr_reader :age, :ethnicity
+	attr_accessor :gender
 	def speak
 		puts "Ho, ho ho! Haaaaaappy holidays!"
 	end
 
 	def eat_milk_and_cookies(cookie)
-		puts "That was a good #{coookie}!"
+		puts "That was a good #{cookie}!"
 	end
 
 	def initialize(gender, ethnicity)
@@ -32,18 +33,18 @@ class Santa
 		@reindeer_ranking<<(reindeer)
 		puts @reindeer_ranking
 	end
+#getter methods
+	# def gender=(gender)
+	# 	@gender = gender
+	# end
 
-	def gender=(gender)
-		@gender = gender
-	end
+	# def age
+	# 	@age 
+	# end
 
-	def age
-		@age 
-	end
-
-	def ethnicity
-		@ethnicity
-	end
+	# def ethnicity
+	# 	@ethnicity
+	# end
 
 end
 
@@ -58,9 +59,10 @@ end
 santas.each {|santa| santa.describe_santa}
 
 santas[0].get_mad_at("Dasher")
-santas[0].gender=("amorphous")
+santas[0].gender = ("amorphous")
 santas[1].celebrate_birthday
 puts santas[0].age
 puts santas[1].age
-
+santas[4].speak
+santas[2].eat_milk_and_cookies("peanut butter cookie")
 santas.each {|santa| santa.describe_santa}
