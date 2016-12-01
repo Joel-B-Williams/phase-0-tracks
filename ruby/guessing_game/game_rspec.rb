@@ -10,4 +10,8 @@ describe Game do
 	it "establishes secret word" do
 		expect(game.secret_word("word")).to eq "word"
 	end
+
+	it "checks number of guesses" do
+		expect(game.more_guesses). to eq true
+	end
 end
