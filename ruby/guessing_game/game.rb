@@ -8,6 +8,7 @@
 class Game
 	def initialize
 		@guess_count = 0
+		@guessed_letters = []
 	end
 	def secret_word(word)
 		@secret_word = word
@@ -21,4 +22,12 @@ class Game
 			false
 		end
 	end
+#test method for rspec reasons <- adjust to add player guesses to array later?
+	def change_guessed_letters(new_array)
+		@guessed_letters = new_array
+	end
+	def was_guessed(player_guess)
+		 @guessed_letters.include? player_guess
+	end
+
 end
