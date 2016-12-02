@@ -8,23 +8,24 @@
 class Game
 	def initialize
 		@guess_count = 0
+		@last_guess = ""
 		@guessed_letters = []
+		@display = ""
 	end
 	def secret_word(word)
 		@secret_word = word
 	end
 
 	def more_guesses
-		@secret_word = "horse"
 		if @guess_count < @secret_word.length*2
 			true
 		else
 			false
 		end
 	end
-#test method for rspec reasons <- adjust to add player guesses to array later?
-	def change_guessed_letters(new_array)
-		@guessed_letters = new_array
+
+	def player_guess(letter) #--argument to be last_guess--
+		@guessed_letters<<letter
 	end
 	
 	def was_guessed(player_guess)
@@ -34,6 +35,27 @@ class Game
 	def increase_guess_count(bool) #--argument to be was_guessed--
 		@guess_count += 1 if bool == false
 		bool	
+  end
+
+  def last_guess(letter)
+  	@last_guess = letter
+  end
+
+  def display_blanks
+  	@display += "_"*@secret_word.length
+  end
+
+#break secret word into array (.chars)
+#compare each letter to last letter guessed
+#if last letter = given index of secret word (array)
+#assign letter to corresponding index of display
+  def update_display 
+  	letters = @secret_word.chars
+  	letters.each_with_index do |letter, index|
+  		if letter == @last_guess
+  			@display[index] = @last_guess
+  		end
+  	end
   end
 
 end
