@@ -26,8 +26,14 @@ class Game
 	def change_guessed_letters(new_array)
 		@guessed_letters = new_array
 	end
+	
 	def was_guessed(player_guess)
-		 @guessed_letters.include? player_guess
+		@guessed_letters.include? player_guess
 	end
+
+	def increase_guess_count(bool) #--argument to be was_guessed--
+		@guess_count += 1 if bool == false
+		bool	
+  end
 
 end

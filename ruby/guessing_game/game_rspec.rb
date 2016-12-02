@@ -19,4 +19,14 @@ describe Game do
 		game.change_guessed_letters(["a", "c", "s", "p"])
 		expect(game.was_guessed("d")). to eq false
 	end
+
+	it "DOES NOT increase guess count if letter already guessed" do #if 'was-guessed' = true
+		game.change_guessed_letters(["a", "c", "s", "p"])
+		expect(game.increase_guess_count(game.was_guessed("a"))). to eq true
+	end
+
+	it "DOES increase guess count if letter NOT already guessed" do
+		game.change_guessed_letters(["a", "c", "s", "p"])
+		expect(game.increase_guess_count(game.was_guessed("r"))). to eq false
+	end
 end
