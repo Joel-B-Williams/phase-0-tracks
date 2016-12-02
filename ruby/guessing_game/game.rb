@@ -6,6 +6,7 @@
 # display appropriate message at end of game
 
 class Game
+	attr_accessor :display, :last_guess
 	def initialize
 		@guess_count = 0
 		@last_guess = ""
@@ -51,11 +52,8 @@ class Game
 #assign letter to corresponding index of display
   def update_display 
   	letters = @secret_word.chars
-  	letters.each_with_index do |letter, index|
-  		if letter == @last_guess
-  			@display[index] = @last_guess
-  		end
-  	end
+  	letters.each_with_index {|letter, index| @display[index] = letter if letter == @last_guess}
+  	@display
   end
 
 end
