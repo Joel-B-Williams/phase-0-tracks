@@ -6,7 +6,7 @@
 # display appropriate message at end of game
 
 class Game
-	attr_accessor :display, :last_guess
+	attr_reader :guess_count, :word_display
 	def initialize
 		@guess_count = 0
 		@guess = ""
@@ -18,11 +18,7 @@ class Game
 	end
 
 	def more_guesses
-		if @guess_count < @secret_word.length*2
-			true
-		else
-			false
-		end
+	  @guess_count < @secret_word.length*2
 	end
 
 	def store_guess(letter) #--argument to be last_guess--
@@ -35,10 +31,10 @@ class Game
 
 	def increase_guess_count(bool) #--argument to be was_guessed--
 		@guess_count += 1 if bool == false
-		bool	
+		!bool	
   end
 
-  def guess(letter)
+  def guess=(letter)
   	@guess = letter
   end
 
@@ -56,32 +52,57 @@ class Game
   	@word_display
   end
 
-  def display_guess_count 
-  	p @guess_count
-  end
+  # def display_guess_count
+  # 	@guess_count
+  # end
 
-  def display_current_board 
-  	p @word_display
-  end
+  # def display_current_board
+  # 	@word_display
+  # end
 end
 
 
 #### USER INTERFACE ####
 
-# puts "FORSOOTH AND VERILY!!  What word shall your opponent be forced to guess?"
-# secret_word = gets.chomp
-# puts "SO SHALL IT BE.  Initializing the test of the ancients."
-# game = Game.new
-# game.secret_word(secret_word)
-# puts "Champion of yonder regions, to succeed in all things hitherto-for, you must FILL IN THE BLANKS."
-# puts game.display_blanks
-# until game.more_guesses != true
-# puts "What shall your guess be?"
-# #take guess, increase guess_count?
-# guess = gets.chomp
-# game.last_guess(guess)
-# game.increase_guess_count(game.was_guessed(guess))
-# game.player_guess(guess) if !game.increase_guess_count(game.was_guessed(guess)) 
-# end
+puts "FORSOOTH AND VERILY!!  What word shall your opponent be forced to guess?"
+secret_word = gets.chomp
+puts "\n"*50
+puts "SO SHALL IT BE.  Initializing the test of the ancients."
+game = Game.new
+game.secret_word(secret_word)
+puts "Champion of yonder regions, to succeed in all things hitherto-for, you must FILL IN THE BLANKS."
+puts game.display_blanks
+
+#loop logic...
+#while the player has more guesses
+#ask player for a guess
+#check if guess is a repeat (specialty responce for repeat?)
+#if not repeat, update counter and add to guessed letters
+#update the display
+#display guess count and word board
+#if display ever equals secret word (ie, fully guessed) display good message
+#if out of guesses and failure, mock the poop out of player
+while game.more_guesses
+  puts "What shall be thine guess???"
+  guess = gets.chomp
+  game.guess=(guess)
+  game.store_guess(guess) if game.increase_guess_count(game.was_guessed(guess))#logic = bool forest
+  game.update_display
+  puts "Guess Count: #{game.guess_count}"
+  puts "Current Board: #{game.word_display}"
+  if game.word_display == secret_word
+    puts "Lo and behold, a champion has arisen!!  HUZZAH!! HUZZAH!! HUZZAH!!"
+    break
+  end
+end
+
+#failure message here - if secret word != display board after guesses used
+puts "ALAS!! BETRAYAL AND HERESY!!! Curse you and your progeny's progeny!!" if game.word_display != secret_word
+
+
+
+
+
+
 
 
