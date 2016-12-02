@@ -17,17 +17,17 @@ describe Game do
 	end
 
 	it "checks if letter has been guessed" do
-		game.player_guess(game.last_guess("d"))
+		game.store_guess(game.guess("d"))
 		expect(game.was_guessed("d")). to eq true
 	end
 
 	it "DOES NOT increase guess count if letter already guessed" do #if 'was-guessed' = true
-		game.player_guess(game.last_guess("a"))
+		game.store_guess(game.guess("a"))
 		expect(game.increase_guess_count(game.was_guessed("a"))). to eq true
 	end
 
 	it "DOES increase guess count if letter NOT already guessed" do
-		game.player_guess(game.last_guess("a"))
+		game.store_guess(game.guess("a"))
 		expect(game.increase_guess_count(game.was_guessed("r"))). to eq false
 	end
 
@@ -39,7 +39,21 @@ describe Game do
 	it "updates display when correct letters guessed" do
 		game.secret_word("panda")
 		game.display_blanks
-		game.last_guess("a")
+		game.guess("a")
 		expect(game.update_display). to eq "_a__a"
+	end
+
+	it "displays current guess count" do
+		game.guess("a")
+		game.increase_guess_count(game.was_guessed("a"))
+		expect(game.display_guess_count). to eq 1
+	end
+
+	it "displays current word display" do
+		game.secret_word("panda")
+		game.display_blanks
+		game.guess("a")
+		game.update_display
+		expect(game.display_current_board). to eq "_a__a"
 	end
 end
