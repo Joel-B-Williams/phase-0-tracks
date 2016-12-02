@@ -44,7 +44,7 @@ class Game
 
 #break secret word into array (.chars)
 #compare each letter to last letter guessed
-#if last letter = given index of secret word (array)
+#if last letter = givgiten index of secret word (array)
 #assign letter to corresponding index of display
   def update_display 
   	letters = @secret_word.chars
@@ -52,13 +52,7 @@ class Game
   	@word_display
   end
 
-  # def display_guess_count
-  # 	@guess_count
-  # end
-
-  # def display_current_board
-  # 	@word_display
-  # end
+ 
 end
 
 
