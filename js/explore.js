@@ -3,3 +3,11 @@
 // add last index into new variable (henceforth "newWord")
 // return newWord (because JS doesn't do it on its own)
 
+function reverseWord(word) {
+	var newWord = "";
+	for (i=word.length-1; i >= 0; i--) {
+		newWord += word[i];
+	}
+	return newWord;
+}
+
