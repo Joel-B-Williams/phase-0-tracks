@@ -27,6 +27,37 @@ var findLongest = function(arrayOfWords) {
 return longest;
 };
 
-console.log(findLongest(words));
-console.log(findLongest(insults));
-console.log(findLongest(compliments));
+
+// look at two objects and see if any key-value pairs are a match
+// for each item in object a
+//   look at each item in object b - return true if match
+//   return 'match' value
+
+var carList = {car: "blue", truck: "yellow"};
+var carList2 = {car: "yellow", truck: "yellow"};
+var carList3 = {car: "red", truck: "red"};
+
+
+var findMatch = function(carsA, carsB) {
+	var match = false;
+	for (var vehicleType in carsA) {
+	  for (var vehicleColor in carsB) {
+	    if (vehicleType === vehicleColor && carsA[vehicleType] === carsB[vehicleColor]) {
+	      match = true;
+	    }
+	  }
+	}
+	return match;
+}
+
+	
+
+
+//##DRIVER TESTS##
+
+// console.log(findLongest(words));
+// console.log(findLongest(insults));
+// console.log(findLongest(compliments));
+
+console.log(findMatch(carList, carList2));
+console.log(findMatch(carList, carList3));
