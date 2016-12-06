@@ -11,3 +11,8 @@ function reverseWord(word) {
 	return newWord;
 }
 
+var newWord = reverseWord("pants");
+
+if (1>0) {
+	console.log(newWord);
+	}
