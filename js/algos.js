@@ -14,18 +14,18 @@ var compliments = ["jklol your nose isn't froglike at all",
 										"no taunting today",
 										"wiki neeeee pong"
 										];
-var findLongest = function(arrayOfWords) {
+function findLongest(arrayOfWords) {
 	var charCount = 0;
 	var longest = "";
 
-	for (i=0; i<arrayOfWords.length; i++) {
+	for (var i=0; i<arrayOfWords.length; i++) {
 		if (arrayOfWords[i].length > charCount) {
 			longest = arrayOfWords[i];
 			charCount = arrayOfWords[i].length;
 		}
 	}
 return longest;
-};
+}
 
 
 // look at two objects and see if any key-value pairs are a match
@@ -85,4 +85,10 @@ function makeArray(arrayLength) {
 // console.log(findMatch(carList, carList2));
 // console.log(findMatch(carList, carList3));
 
-console.log(makeArray(3));
+// console.log(makeArray(3));
+
+for (var i=0; i<10; i++) {
+	var myArray = makeArray(5);
+	console.log(myArray);
+	console.log(findLongest(myArray));
+};
