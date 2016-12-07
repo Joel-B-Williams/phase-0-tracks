@@ -60,29 +60,29 @@ function randomNumber(min, max) {
 }
 
 function makeWord(length) {
-	alph = "abcdefghijklmnopqrstuvwxyz";
-	newWord = "";
-	for (i=0; i<length; i++) {
-		newWord+=(alph[randomNumber(0, 27)]);
+	var alph = "abcdefghijklmnopqrstuvwxyz";
+	var newWord = "";
+	for (var i=0; i<length; i++) {
+		newWord+=(alph[randomNumber(0, 26)]);
 	}
 	return newWord;
 }
 
-var makeArray = function(length) {
-	newArray.push
+function makeArray(arrayLength) {
+	var newArray = [];
+	for (var i=0; i<arrayLength; i++) {
+		newArray.push(makeWord(randomNumber(1, 11)));
+	}
+	return newArray;
 }
-
-//##DRIVER TESTS##
-
-// console.log(findLongest(words));
-// console.log(findLongest(insults));
+		
+		//##DRIVER TESTS##
+		
+		// console.log(findLongest(words));
+		// console.log(findLongest(i)nsults));
 // console.log(findLongest(compliments));
 
 // console.log(findMatch(carList, carList2));
 // console.log(findMatch(carList, carList3));
 
-function getRandom(){
-	return Math.random();
-}
-
-console.l
+console.log(makeArray(3));
