@@ -51,7 +51,26 @@ var findMatch = function(carsA, carsB) {
 }
 
 	
+// take integer for length (x)
+// x times, build/return array x items long
+// items are words of random (1-10) length
+function randomNumber(min, max) {
+  var x = Math.random() * (max - min) + min;
+  return Math.floor(x);
+}
 
+function makeWord(length) {
+	alph = "abcdefghijklmnopqrstuvwxyz";
+	newWord = "";
+	for (i=0; i<length; i++) {
+		newWord+=(alph[randomNumber(0, 27)]);
+	}
+	return newWord;
+}
+
+var makeArray = function(length) {
+	newArray.push
+}
 
 //##DRIVER TESTS##
 
@@ -59,5 +78,11 @@ var findMatch = function(carsA, carsB) {
 // console.log(findLongest(insults));
 // console.log(findLongest(compliments));
 
-console.log(findMatch(carList, carList2));
-console.log(findMatch(carList, carList3));
+// console.log(findMatch(carList, carList2));
+// console.log(findMatch(carList, carList3));
+
+function getRandom(){
+	return Math.random();
+}
+
+console.l
