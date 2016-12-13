@@ -1,0 +1,91 @@
+-Query 1-
+SELECT * FROM cooks;
+
+1|Rich|1|1|15.5
+2|Cera|2|3|12.5
+3|Jocy|3|2|13.5
+4|Matt|4|4|11
+5|Mark|2|3|12
+6|Ken|1|2|13.5
+7|Dave|3|3|12.5
+8|Squire|4|4|10
+9|Kelly|5|2|14
+10|Kelly's Minion|5|4|10
+
+-Query 2-
+UPDATE cooks SET title = 2 WHERE name = "Cera";
+SELECT * FROM cooks;
+
+1|Rich|1|1|15.5
+2|Cera|2|2|12.5
+3|Jocy|3|2|13.5
+4|Matt|4|4|11
+5|Mark|2|3|12
+6|Ken|1|2|13.5
+7|Dave|3|3|12.5
+8|Squire|4|4|10
+9|Kelly|5|2|14
+10|Kelly's Minion|5|4|10
+
+-Query 3-
+SELECT * FROM cooks
+JOIN titles ON cooks.title = titles.id
+JOIN stations ON cooks.station = stations.id;
+
+1|Rich|1|1|15.5|1|Cook 1|1|Grill
+2|Cera|2|2|12.5|2|Cook 2|2|Saute
+3|Jocy|3|2|13.5|2|Cook 2|3|Pasta
+4|Matt|4|4|11|4|Intern|4|GarMo
+5|Mark|2|3|12|3|Cook 3|2|Saute
+6|Ken|1|2|13.5|2|Cook 2|1|Grill
+7|Dave|3|3|12.5|3|Cook 3|3|Pasta
+8|Squire|4|4|10|4|Intern|4|GarMo
+9|Kelly|5|2|14|2|Cook 2|5|Pastry
+10|Kelly's Minion|5|4|10|4|Intern|5|Pastry
+
+-Query 4-
+SELECT cooks.name, titles.title, stations.station, cooks.PayRate
+FROM cooks
+JOIN titles ON cooks.title = titles.id
+JOIN stations ON cooks.station = stations.id;
+
+Rich|Cook 1|Grill|15.5
+Cera|Cook 2|Saute|12.5
+Jocy|Cook 2|Pasta|13.5
+Matt|Intern|GarMo|11
+Mark|Cook 3|Saute|12
+Ken|Cook 2|Grill|13.5
+Dave|Cook 3|Pasta|12.5
+Squire|Intern|GarMo|10
+Kelly|Cook 2|Pastry|14
+Kelly's Minion|Intern|Pastry|10
+
+-Query 5-
+DELETE FROM cooks WHERE name = "Kelly's Minion";
+SELECT cooks.name, titles.title, stations.station, cooks.PayRate
+FROM cooks
+JOIN titles ON cooks.title = titles.id
+JOIN stations ON cooks.station = stations.id;
+
+Rich|Cook 1|Grill|15.5
+Cera|Cook 2|Saute|12.5
+Jocy|Cook 2|Pasta|13.5
+Matt|Intern|GarMo|11
+Mark|Cook 3|Saute|12
+Ken|Cook 2|Grill|13.5
+Dave|Cook 3|Pasta|12.5
+Squire|Intern|GarMo|10
+Kelly|Cook 2|Pastry|14
+
+-Query 6- 
+Query 4 & 5 show selective cross joins.  Because I love to dump gross unreadable tables, here is an un-selective cross join (prepare yourself).
+
+1|Rich|1|1|15.5|1|Cook 1|1|Grill
+2|Cera|2|2|12.5|2|Cook 2|2|Saute
+3|Jocy|3|2|13.5|2|Cook 2|3|Pasta
+4|Matt|4|4|11|4|Intern|4|GarMo
+5|Mark|2|3|12|3|Cook 3|2|Saute
+6|Ken|1|2|13.5|2|Cook 2|1|Grill
+7|Dave|3|3|12.5|3|Cook 3|3|Pasta
+8|Squire|4|4|10|4|Intern|4|GarMo
+9|Kelly|5|2|14|2|Cook 2|5|Pastry
