@@ -1,0 +1,35 @@
+
+-Query 1-
+SELECT * FROM reviews
+JOIN businesses ON reviews.business_id = businesses.id
+JOIN users ON reviews.user_id = users.id
+;
+
+1|5|BEST DONUTS EVAHR OMG SO FAT YASSSSS|1|1|1|Doodle's Donuts
+2|1|BLEH SO GROSS|3|2|2|Zorro's Whip Factory
+1|5|BEST DONUTS EVAHR OMG SO FAT YASSSSS|1|1|1|Doodle's Donuts|1|Joel|Williams
+2|1|BLEH SO GROSS|3|2|3|Marlboro Ice Cream|2|Levon|The Cat
+3|3|It was okay|2|4|2|Zorro's Whip Factory|4|Person|Name
+
+-Query 2-
+SELECT users.first_name, users.last_name, businesses.name, reviews.stars, reviews.comment
+JOIN businesses ON reviews.business_id = businesses.id
+JOIN users ON reviews.user_id = users.id
+;
+
+first_name|last_name|name|stars|comment
+Joel|Williams|Doodle's Donuts|5|BEST DONUTS EVAHR OMG SO FAT YASSSSS
+Levon|The Cat|Marlboro Ice Cream|1|BLEH SO GROSS
+Person|Name|Zorro's Whip Factory|3|It was okay
+
+-Query 3- 
+SELECT * FROM reviews
+JOIN businesses ON reviews.business_id = businesses.id
+JOIN users ON reviews.user_id = users.id
+WHERE businesses.id = 3
+;
+
+id|stars|comment      |business_id|user_id|id|name              |id|first_name|last_name
+2 |1    |BLEH SO GROSS|3          |2      |3 |Marlboro Ice Cream|2 |Levon     |The Cat
+
+
