@@ -7,25 +7,36 @@ db = SQLite3::Database.new("cache.db")
 create_table = '
 CREATE TABLE IF NOT EXISTS budgets(
 id INTEGER PRIMARY KEY,
+name TEXT,
 cache INTEGER,
 expected_income INTEGER,
-actual_income INTEGER
+actual_income INTEGER,
+expenses INTEGER
 )'
 
 db.execute(create_table) 
 
+#Method to add new user
+def add_user(db, user_name)
 add_user = '
-INSERT INTO budgets (cache, expected_income, actual_income)
-VALUES (0,0,0)'
+	INSERT INTO budgets 
+	(name, cache, expected_income, actual_income, expenses)
+	VALUES (?,0,0,0,0)'
 
-# db.execute(add_user) - want this to run only once for single user
+	db.execute(add_user, [user_name]) 
+end
 
 # --methods to retreive and manipulate table data--
 # method to set expected income 
-def set_expected_income(db, dolla_dolla_bills_yall)
+def set_expected_income(db, user_name, dolla_dolla_bills_yall)
 	expected_income = '
 	UPDATE budgets SET expected_income = ?
-	WHERE id = 1' 
-	db.execute(expected_income, [dolla_dolla_bills_yall]) 
+	WHERE name = ?' 
+	db.execute(expected_income, [dolla_dolla_bills_yall, user_name]) 
 end
 
+#DRIVER CODE ish - if statement for new/existing budget
+# puts "What is your name, humanoid?"
+# user = gets.chomp
+# add_user(db, user)
+# set_expected_income(db, user, 2000)
