@@ -70,7 +70,25 @@ def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
 	db.execute(change_expenses, [new_expenses_total, user_name])
 end
 
+# method to check current cache
+def current_cache(db, user_name)
+	retrieve_cache = '
+	SELECT cache FROM budgets
+	WHERE name = ?'
+	cache = db.execute(retrieve_cache, [user_name])
+end
+
+# method to determine excess money to move to cache
+def extra_cash(db, user_name)
+	# determine extra monies
+	extra = (current_income[0][0] - current_expenses[0][0])
+
+end
+
 # method to reset row/add to cache(?) -> time module?
+def monthly_reset(db, user_name)
+end
+
 
 # DRIVER CODE ish - if statement for new/existing budget
 # puts "What is your name, humanoid?"
