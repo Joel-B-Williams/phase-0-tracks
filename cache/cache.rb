@@ -80,9 +80,19 @@ end
 
 # method to determine excess money to move to cache
 def extra_cash(db, user_name)
-	# determine extra monies
-	extra = (current_income[0][0] - current_expenses[0][0])
+	# determine extra monies (conditional on + amount)
+	difference = (current_income(db, user_name)[0][0] - current_expenses(db, user_name)[0][0])
+	cache_bonus = difference if difference > 0
+end
 
+# method to add ^^ bonus ^^ to current cache
+def add_to_cache(db, user_name)
+	cache_bonus = (current_cache(db, user_name)[0][0] + extra_cash(db, user_name))
+	add_bonus = '
+	UPDATE budgets 
+	SET cache = ?
+	WHERE name = ?'
+	db.execute(add_bonus, [cache_bonus, user_name])
 end
 
 # method to reset row/add to cache(?) -> time module?
@@ -91,14 +101,22 @@ end
 
 
 # DRIVER CODE ish - if statement for new/existing budget
-# puts "What is your name, humanoid?"
-# user = gets.chomp
-# add_user(db, user)
-# set_expected_income(db, user, 2000)
+puts "What is your name, humanoid?"
+user = gets.chomp
+add_user(db, user)
+set_expected_income(db, user, 2000)
 
-# puts current_income(db, user)
-# puts current_expenses(db, user)
-# add_to_income(db, user, 500)
-# add_to_expenses(db, user, 200)
-# puts current_income(db, user)
-# puts current_expenses(db, user)
+puts "income/expenses/cache"
+puts current_income(db, user)
+puts current_expenses(db, user)
+puts current_cache(db, user)
+puts "income/expenses"
+add_to_income(db, user, 500)
+add_to_expenses(db, user, 200)
+puts current_income(db, user)
+puts current_expenses(db, user)
+add_to_cache(db, user)
+puts "new cache, income/expenses"
+puts current_cache(db, user)
+puts current_income(db, user)
+puts current_expenses(db, user)
