@@ -95,8 +95,29 @@ def add_to_cache(db, user_name)
 	db.execute(add_bonus, [cache_bonus, user_name])
 end
 
+# method to reset actual income
+def reset_actual_income(db, user_name)
+	reset = '
+	UPDATE budgets
+	SET actual_income = 0
+	WHERE name = ?'
+	db.execute(reset, [user_name])
+end
+
+# method to reset expenses
+def reset_expenses(db, user_name)
+	reset = '
+	UPDATE budgets
+	SET expenses = 0
+	WHERE name = ?'
+	db.execute(reset, [user_name])
+end
+
 # method to reset row/add to cache(?) -> time module?
 def monthly_reset(db, user_name)
+ add_to_cache(db, user_name)
+ reset_actual_income(db, user_name)
+ reset_expenses(db, user_name)
 end
 
 
@@ -115,8 +136,12 @@ add_to_income(db, user, 500)
 add_to_expenses(db, user, 200)
 puts current_income(db, user)
 puts current_expenses(db, user)
-add_to_cache(db, user)
 puts "new cache, income/expenses"
 puts current_cache(db, user)
 puts current_income(db, user)
 puts current_expenses(db, user)
+monthly_reset(db, user)
+puts "Post reset income/expenses/cache"
+puts current_income(db, user)
+puts current_expenses(db, user)
+puts current_cache(db, user)
