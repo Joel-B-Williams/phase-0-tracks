@@ -22,7 +22,6 @@ add_user = '
 	INSERT INTO budgets 
 	(name, cache, expected_income, actual_income, expenses)
 	VALUES (?,0,0,0,0)'
-
 	db.execute(add_user, [user_name]) 
 end
 
@@ -35,8 +34,26 @@ def set_expected_income(db, user_name, dolla_dolla_bills_yall)
 	db.execute(expected_income, [dolla_dolla_bills_yall, user_name]) 
 end
 
-#DRIVER CODE ish - if statement for new/existing budget
+# method to check current actual income
+def current_income(db, user_name)	
+	retrieve_income = '
+	SELECT actual_income FROM budgets
+	WHERE name = ?'
+	income = db.execute(retrieve_income, [user_name])
+end
+
+# method to add to actual income
+def add_to_income(db, user_name, dolla_dolla_bills_yall)
+	add_income = '
+	'
+end
+# method to add to expenses
+# method to reset row/add to cache(?) -> time module?
+
+# DRIVER CODE ish - if statement for new/existing budget
 # puts "What is your name, humanoid?"
 # user = gets.chomp
 # add_user(db, user)
 # set_expected_income(db, user, 2000)
+
+# puts current_income(db, user)
