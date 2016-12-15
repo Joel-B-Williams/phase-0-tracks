@@ -51,7 +51,25 @@ def add_to_income(db, user_name, dolla_dolla_bills_yall)
 	WHERE name = ?'
 	db.execute(change_income, [new_income_total, user_name])
 end
+
+# method to check current expenses
+def current_expenses(db, user_name)
+	retrieve_expenses = '
+	SELECT expenses FROM budgets
+	WHERE name = ?'
+	expenses = db.execute(retrieve_expenses, [user_name])
+end
+
 # method to add to expenses
+def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
+	new_expenses_total = (dolla_dolla_bills_yall + current_expenses(db, user_name)[0][0])
+	change_expenses = '
+	UPDATE budgets
+	SET expenses = ?
+	WHERE name = ?'
+	db.execute(change_expenses, [new_expenses_total, user_name])
+end
+
 # method to reset row/add to cache(?) -> time module?
 
 # DRIVER CODE ish - if statement for new/existing budget
@@ -61,6 +79,8 @@ end
 # set_expected_income(db, user, 2000)
 
 # puts current_income(db, user)
-
+# puts current_expenses(db, user)
 # add_to_income(db, user, 500)
+# add_to_expenses(db, user, 200)
 # puts current_income(db, user)
+# puts current_expenses(db, user)
