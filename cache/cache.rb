@@ -44,8 +44,12 @@ end
 
 # method to add to actual income
 def add_to_income(db, user_name, dolla_dolla_bills_yall)
-	add_income = '
-	'
+	new_income_total = (dolla_dolla_bills_yall + current_income(db, user_name)[0][0])
+	change_income = '
+	UPDATE budgets 
+	SET actual_income = ?
+	WHERE name = ?'
+	db.execute(change_income, [new_income_total, user_name])
 end
 # method to add to expenses
 # method to reset row/add to cache(?) -> time module?
@@ -56,4 +60,7 @@ end
 # add_user(db, user)
 # set_expected_income(db, user, 2000)
 
+# puts current_income(db, user)
+
+# add_to_income(db, user, 500)
 # puts current_income(db, user)
