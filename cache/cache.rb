@@ -54,7 +54,7 @@ end
 
 # method to add to actual income
 def add_to_income(db, user_name, dolla_dolla_bills_yall)
-	new_income_total = (dolla_dolla_bills_yall + current_income(db, user_name)[0][0])
+	new_income_total = (dolla_dolla_bills_yall.to_i + current_income(db, user_name)[0][0])
 	change_income = '
 	UPDATE budgets 
 	SET actual_income = ?
@@ -72,7 +72,7 @@ end
 
 # method to add to expenses
 def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
-	new_expenses_total = (dolla_dolla_bills_yall + current_expenses(db, user_name)[0][0])
+	new_expenses_total = (dolla_dolla_bills_yall.to_i + current_expenses(db, user_name)[0][0])
 	change_expenses = '
 	UPDATE budgets
 	SET expenses = ?
@@ -108,7 +108,7 @@ end
 # method to pull from cache
 def pull_from_cache(db, user_name, dolla_dolla_bills_yall)
 	#set cache = current value - arg, then add arg to income()
-	new_cache = (current_cache(db, user_name)[0][0] - dolla_dolla_bills_yall)
+	new_cache = (current_cache(db, user_name)[0][0] - dolla_dolla_bills_yall.to_i)
 	update_cache = '
 	UPDATE budgets 
 	SET cache = ?
@@ -190,7 +190,7 @@ end
 commands = ["Set expected income", 
 						"Add income", 
 						"Add expense",
-						"Pull from cache" 
+						"Pull from cache", 
 						"View cache", 
 						"View income", 
 						"View expenses", 
@@ -249,23 +249,3 @@ until option == "q"
 end
 
 puts "Thank you for using Cache!"
-# set_expected_income(db, user, 2000)
-
-# puts "income/expenses/cache"
-# puts current_income(db, user)
-# puts current_expenses(db, user)
-# puts current_cache(db, user)
-# puts "income/expenses"
-# add_to_income(db, user, 500)
-# add_to_expenses(db, user, 200)
-# puts current_income(db, user)
-# puts current_expenses(db, user)
-# puts "new cache, income/expenses"
-# puts current_cache(db, user)
-# puts current_income(db, user)
-# puts current_expenses(db, user)
-# monthly_reset(db, user)
-# puts "Post reset income/expenses/cache"
-# puts current_income(db, user)
-# puts current_expenses(db, user)
-# puts current_cache(db, user)
