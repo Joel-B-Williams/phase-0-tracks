@@ -41,7 +41,7 @@ def expected_income(db, user_name)
 	retrieve_expected_income = '
 	SELECT expected_income FROM budgets
 	WHERE name = ?'
-	expected_income = db.execute(retrieve_expected_income, [user_name])
+	expected_income = db.execute(retrieve_expected_income, [user_name])[0][0]
 end
 
 # method to check current actual income
@@ -49,12 +49,12 @@ def current_income(db, user_name)
 	retrieve_income = '
 	SELECT actual_income FROM budgets
 	WHERE name = ?'
-	income = db.execute(retrieve_income, [user_name])
+	income = db.execute(retrieve_income, [user_name])[0][0]
 end
 
 # method to add to actual income
 def add_to_income(db, user_name, dolla_dolla_bills_yall)
-	new_income_total = (dolla_dolla_bills_yall.to_i + current_income(db, user_name)[0][0])
+	new_income_total = (dolla_dolla_bills_yall.to_i + current_income(db, user_name))
 	change_income = '
 	UPDATE budgets 
 	SET actual_income = ?
@@ -67,12 +67,12 @@ def current_expenses(db, user_name)
 	retrieve_expenses = '
 	SELECT expenses FROM budgets
 	WHERE name = ?'
-	expenses = db.execute(retrieve_expenses, [user_name])
+	expenses = db.execute(retrieve_expenses, [user_name])[0][0]
 end
 
 # method to add to expenses
 def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
-	new_expenses_total = (dolla_dolla_bills_yall.to_i + current_expenses(db, user_name)[0][0])
+	new_expenses_total = (dolla_dolla_bills_yall.to_i + current_expenses(db, user_name))
 	change_expenses = '
 	UPDATE budgets
 	SET expenses = ?
@@ -85,19 +85,19 @@ def current_cache(db, user_name)
 	retrieve_cache = '
 	SELECT cache FROM budgets
 	WHERE name = ?'
-	cache = db.execute(retrieve_cache, [user_name])
+	cache = db.execute(retrieve_cache, [user_name])[0][0]
 end
 
 # method to determine excess money to move to cache
 def extra_cash(db, user_name)
 	# determine extra monies (conditional on + amount)
-	difference = (current_income(db, user_name)[0][0] - current_expenses(db, user_name)[0][0])
+	difference = (current_income(db, user_name) - current_expenses(db, user_name))
 	cache_bonus = difference if difference > 0 || 0
 end
 
 # method to add ^^ bonus ^^ to current cache
 def add_to_cache(db, user_name)
-	cache_bonus = (current_cache(db, user_name)[0][0] + extra_cash(db, user_name))
+	cache_bonus = (current_cache(db, user_name) + extra_cash(db, user_name))
 	add_bonus = '
 	UPDATE budgets 
 	SET cache = ?
@@ -108,7 +108,7 @@ end
 # method to pull from cache
 def pull_from_cache(db, user_name, dolla_dolla_bills_yall)
 	#set cache = current value - arg, then add arg to income()
-	new_cache = (current_cache(db, user_name)[0][0] - dolla_dolla_bills_yall.to_i)
+	new_cache = (current_cache(db, user_name) - dolla_dolla_bills_yall.to_i)
 	update_cache = '
 	UPDATE budgets 
 	SET cache = ?
@@ -153,7 +153,7 @@ def check_month(db, user_name)
 	stored_month = '
 	SELECT month FROM budgets
 	WHERE name = ?'
-	month = db.execute(stored_month, [user_name])
+	month = db.execute(stored_month, [user_name])[0][0]
 end
 
 # method to change month column
@@ -164,10 +164,10 @@ def change_month(db, user_name)
 	next_month = '
 	UPDATE budgets SET month = ?
 	WHERE name = ?'
-	if check_month(db, user_name)[0][0] == 12
+	if check_month(db, user_name) == 12
 		db.execute(dec_to_jan, [user_name])
 	else 
-		db.execute(next_month, [(check_month(db,user_name)[0][0]+1), user_name])
+		db.execute(next_month, [(check_month(db,user_name)+1), user_name])
 	end
 	check_month(db, user_name)
 end
@@ -182,7 +182,7 @@ active_account = gets.chomp
 add_user(db, user) if active_account[0].downcase == "n"
 
 # check month - add to month-column if not equal 
-while check_month(db, user)[0][0] != Date.today.month
+while check_month(db, user) != Date.today.month
 	monthly_reset(db, user)
 	change_month(db, user)
 end
@@ -222,8 +222,8 @@ until option == "q"
 		add_to_expenses(db, user, dollar_amount)
 	when "4"
 		puts "How much would you like to pull from your cache?"
-		dollar_amount = gets.chomp
-		if dollar_amount > current_cache(db, user)[0][0]
+		dollar_amount = gets.chomp.to_i
+		if dollar_amount > current_cache(db, user)
 			puts "I'm sorry, you do not have that much in your cache."
 		else
 			#method to pull from cache, followed by add_to_income
@@ -231,16 +231,16 @@ until option == "q"
 			add_to_income(db, user, dollar_amount)
 		end
 	when "5"
-		puts "Current Cache: $#{current_cache(db, user)[0][0]}"
+		puts "Current Cache: $#{current_cache(db, user)}"
 	when "6"
-		puts "Current Monthly Income: $#{current_income(db, user)[0][0]}"
+		puts "Current Monthly Income: $#{current_income(db, user)}"
 	when "7"
-		puts "Current Monthly Expenses: $#{current_expenses(db, user)[0][0]}"
+		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
 	when "8"
-		puts "Current Expected income: $#{expected_income(db, user)[0][0]}"
-		puts "Current Monthly Income: $#{current_income(db, user)[0][0]}"
-		puts "Current Monthly Expenses: $#{current_expenses(db, user)[0][0]}"
-		puts "Current Cache: $#{current_cache(db, user)[0][0]}"
+		puts "Current Expected income: $#{expected_income(db, user)}"
+		puts "Current Monthly Income: $#{current_income(db, user)}"
+		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
+		puts "Current Cache: $#{current_cache(db, user)}"
 	end
 	puts "\n"
 	display_options(commands)
