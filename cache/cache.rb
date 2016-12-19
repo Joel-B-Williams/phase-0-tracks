@@ -1,185 +1,100 @@
 require 'sqlite3'
 require 'date'
 
-#create database
+# create database
 db = SQLite3::Database.new("cache.db")
 
-#create tables if not already existant
-create_tables = '
-CREATE TABLE IF NOT EXISTS categories(
-id INTEGER PRIMARY KEY,
-total INTEGER,
-housing INTEGER,
-utilities INTEGER,
-food_and_dining INTEGER,
-shopping INTEGER,
-transport INTEGER,
-savings INTEGER,
-funsies INTEGER
-);
+# create tables
 
-CREATE TABLE IF NOT EXISTS budgets(
+create_tables = '
+
+CREATE TABLE IF NOT EXISTS users(
 id INTEGER PRIMARY KEY,
-name TEXT,
-cache INTEGER,
+name VARCHAR(255),
 expected_income INTEGER,
 actual_income INTEGER,
+total_expenses INTEGER,
+cache INTEGER,
 month INTEGER
+);
+
+
+CREATE TABLE IF NOT EXISTS categories(
+id INTEGER PRIMARY KEY,
+name VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS expenses(
+id INTEGER PRIMARY KEY,
+user_id INTEGER REFERENCES users(id),
+category_id INTEGER REFERENCES categories(id),
+amount INTEGER
 )'
 
 db.execute_batch(create_tables)
 
-# Method to add new user
+# Base Methods to add user/category/expense
+
 def add_user(db, user_name)
-add_user = '
-	INSERT INTO categories
-	(total, housing, utilities, food_and_dining, shopping, transport, savings, funsies)
-	VALUES (0,0,0,0,0,0,0,0);
-
-	INSERT INTO budgets 
-	(name, cache, expected_income, actual_income, month)
-	VALUES (?,0,0,0,1)'
-
-	db.execute_batch(add_user, [user_name]) 
+	new_user = '
+	INSERT INTO users (name, expected_income, month)
+	VALUES (?, 0, 1)'
+	db.execute(new_user, [user_name])
 end
 
-# --methods to retreive and manipulate table data--
-# method to set expected income 
-def set_expected_income(db, user_name, dolla_dolla_bills_yall)
-	expected_income = '
-	UPDATE budgets SET expected_income = ?
-	WHERE name = ?' 
-	db.execute(expected_income, [dolla_dolla_bills_yall, user_name]) 
+def add_category(db, category)
+	new_category = '
+	INSERT INTO categories (name)
+	VALUES (?)'
+	db.execute(new_category, [category])
 end
 
-# method to retrieve expected income
-def expected_income(db, user_name)
-	retrieve_expected_income = '
-	SELECT expected_income FROM budgets
+def add_expense(db, user_id, category_id, amount)
+	new_expense = '
+	INSERT INTO expenses (user_id, category_id, amount)
+	VALUES (?,?,?)'
+	db.execute(new_expense, [user_id, category_id, amount])
+end
+
+### INTERACT WITH USERS TABLE
+
+# Method to set expected income
+def set_expected_income(db, user_name, dollars)
+	new_expected_income = '
+	UPDATE users 
+	SET expected_income = ?
 	WHERE name = ?'
-	expected_income = db.execute(retrieve_expected_income, [user_name])
+	db.execute(new_expected_income, [dollars, user_name])
 end
 
-# method to check current actual income
-def current_income(db, user_name)	
-	retrieve_income = '
-	SELECT actual_income FROM budgets
+# Method to set total budget
+def set_total_budget(db, user_name, dollars)
+	new_total_budget = '
+	UPDATE users
+	SET total_budget = ?
 	WHERE name = ?'
-	income = db.execute(retrieve_income, [user_name])[0][0]
+	db.execute(new_total_budget, [dollars, user_name])
 end
 
-# method to add to actual income
-def add_to_income(db, user_name, dolla_dolla_bills_yall)
-	new_income_total = (dolla_dolla_bills_yall.to_i + current_income(db, user_name))
-	change_income = '
-	UPDATE budgets 
-	SET actual_income = ?
-	WHERE name = ?'
-	db.execute(change_income, [new_income_total, user_name])
-end
-
-# method to check current expenses
-def current_expenses(db, user_name)
-	retrieve_expenses = '
-	SELECT total FROM budgets
-	JOIN categories ON budgets.expenses = categories.id
-	WHERE name = ?'
-	expenses = db.execute(retrieve_expenses, [user_name])[0][0]
-end
-
-# method to add to expenses  ++++++++++++++++++++++++++++++++++++++++++=
-def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
-	new_expenses_total = (dolla_dolla_bills_yall.to_i + current_expenses(db, user_name))
-	change_expenses = '
-	UPDATE budgets
-	SET expenses = ?
-	WHERE name = ?'
-	db.execute(change_expenses, [new_expenses_total, user_name])
-end
-
-# method to check current cache
-def current_cache(db, user_name)
-	retrieve_cache = '
-	SELECT cache FROM budgets
-	WHERE name = ?'
-	cache = db.execute(retrieve_cache, [user_name])[0][0]
-end
-
-# method to determine excess money to move to cache
-def extra_cash(db, user_name)
-	# determine extra monies (conditional on + amount)
-	difference = (current_income(db, user_name) - current_expenses(db, user_name))
-	cache_bonus = difference if difference > 0 || 0
-end
-
-# method to add ^^ bonus ^^ to current cache
-def add_to_cache(db, user_name)
-	cache_bonus = (current_cache(db, user_name) + extra_cash(db, user_name))
-	add_bonus = '
-	UPDATE budgets 
-	SET cache = ?
-	WHERE name = ?'
-	db.execute(add_bonus, [cache_bonus, user_name])
-end
-
-# method to pull from cache
-def pull_from_cache(db, user_name, dolla_dolla_bills_yall)
-	#set cache = current value - arg, then add arg to income()
-	new_cache = (current_cache(db, user_name) - dolla_dolla_bills_yall.to_i)
-	update_cache = '
-	UPDATE budgets 
-	SET cache = ?
-	WHERE name = ?'
-	db.execute(update_cache, [new_cache, user_name])
-end
-
-# method to reset actual income
-def reset_actual_income(db, user_name)
-	reset = '
-	UPDATE budgets
-	SET actual_income = 0
-	WHERE name = ?'
-	db.execute(reset, [user_name])
-end
-
-# method to reset expenses +++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def reset_expenses(db, user_name)
-	reset = '
-	UPDATE categories
-	SET * = 0
-	WHERE name = ?'
-	db.execute(reset, [user_name])
-end
-
-# method to reset row/add to cache  ++++++++++++++++++++++++++++++++++++++++++++++++
-def monthly_reset(db, user_name)
- add_to_cache(db, user_name)
- reset_actual_income(db, user_name)
- reset_expenses(db, user_name)
-end
-
-# method to print command options
-def display_options(list)
-	puts "Please select an option (by number):"
-	list.each_with_index {|command, index| puts "#{index+1}. #{command}"}
-	puts "Enter 'q' to quit"
-end
+### Methods to check/update month
 
 # method to check month column
+
 def check_month(db, user_name)
 	stored_month = '
-	SELECT month FROM budgets
+	SELECT month FROM users
 	WHERE name = ?'
 	month = db.execute(stored_month, [user_name])[0][0]
 end
 
 # method to change month column
+
 def change_month(db, user_name)
 	dec_to_jan = '
-	UPDATE budgets SET month = 1
+	UPDATE users SET month = 1
 	WHERE name = ?'
 	next_month = '
-	UPDATE budgets SET month = ?
+	UPDATE users SET month = ?
 	WHERE name = ?'
 	if check_month(db, user_name) == 12
 		db.execute(dec_to_jan, [user_name])
@@ -190,79 +105,21 @@ def change_month(db, user_name)
 end
 
 
-# DRIVER CODE ish 
-puts "What is your name, humanoid?"
-user = gets.chomp
-puts "Do you already have an active account? (y/n)"
-active_account = gets.chomp
+# ==== DRIVER CODE ====
+puts "Welcome to Cache!  Please enter your username."
+user = gets.chomp 
+puts "Do you have an existing account? (y/n)"
+account = gets.chomp
 
-add_user(db, user) if active_account[0].downcase == "n"
+add_user(db, user) if account[0].downcase == "n"
 
-# check month - add to month-column if not equal 
 while check_month(db, user) != Date.today.month
-	monthly_reset(db, user)
+	# monthly_reset(db, user)
 	change_month(db, user)
 end
 
-commands = ["Set expected income", 
-						"Add income", 
-						"Add expense",
-						"Pull from cache", 
-						"View cache", 
-						"View income", 
-						"View full expenses", 
-						"View summary"]
-puts "\n"
-display_options(commands)
-option = gets.chomp
-puts "\n"
-
-until option == "q"
-
-	while option.to_i > commands.length
-		display_options(commands)
-		option = gets.chomp
-	end
-
-	case option
-	when "1" 
-		puts "Please enter expected income:"
-		dollar_amount = gets.chomp
-		set_expected_income(db, user, dollar_amount)
-	when "2"
-		puts "Please enter income amount:"
-		dollar_amount = gets.chomp
-		add_to_income(db, user, dollar_amount)
-	when "3"
-		puts "Please enter expense amount:"
-		dollar_amount = gets.chomp
-		add_to_expenses(db, user, dollar_amount)
-	when "4"
-		puts "How much would you like to pull from your cache?"
-		dollar_amount = gets.chomp
-		if dollar_amount > current_cache(db, user)
-			puts "I'm sorry, you do not have that much in your cache."
-		else
-			#method to pull from cache, followed by add_to_income
-			pull_from_cache(db, user, dollar_amount)
-			add_to_income(db, user, dollar_amount)
-		end
-	when "5"
-		puts "Current Cache: $#{current_cache(db, user)}"
-	when "6"
-		puts "Current Monthly Income: $#{current_income(db, user)}"
-	when "7"
-		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
-	when "8"
-		puts "Current Expected income: $#{expected_income(db, user)}"
-		puts "Current Monthly Income: $#{current_income(db, user)}"
-		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
-		puts "Current Cache: $#{current_cache(db, user)}"
-	end
-	puts "\n"
-	display_options(commands)
-	option = gets.chomp
-	puts "\n"
-end
-
-puts "Thank you for using Cache!"
+# OPTIONS TO INCLUDE...
+# display various
+# set expected income
+# add expense (do via printing/selecing/indexing??)
+# add category
