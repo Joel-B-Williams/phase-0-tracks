@@ -205,83 +205,93 @@ def change_month(db, user_name)
 end
 
 
-# # DRIVER CODE ish 
-# puts "What is your name, humanoid?"
-# user = gets.chomp
-# puts "Do you already have an active account? (y/n)"
-# active_account = gets.chomp
+# DRIVER CODE ish 
+puts "What is your name, humanoid?"
+user = gets.chomp
+puts "Do you already have an active account? (y/n)"
+active_account = gets.chomp
 
-# add_user(db, user) if active_account[0].downcase == "n"
+add_user(db, user) if active_account[0].downcase == "n"
 
-# # check month - add to month-column if not equal 
-# while check_month(db, user) != Date.today.month
-# 	monthly_reset(db, user)
-# 	change_month(db, user)
-# end
+# check month - add to month-column if not equal 
+while check_month(db, user) != Date.today.month
+	monthly_reset(db, user)
+	change_month(db, user)
+end
 
-# commands = ["Set expected income", 
-# 						"Add income", 
-# 						"Add expense",
-# 						"Pull from cache", 
-# 						"View cache", 
-# 						"View income", 
-# 						"View expenses", 
-# 						"View summary",
-# 						"Add new category"]
-# puts "\n"
-# display_options(commands)
-# option = gets.chomp
-# puts "\n"
+commands = ["Set expected income", 
+						"Add income", 
+						"Add expense",
+						"Pull from cache", 
+						"View cache", 
+						"View income", 
+						"View expenses", 
+						"View summary",
+						"View/Add categories"]
+puts "\n"
+display_options(commands)
+option = gets.chomp
+puts "\n"
 
-# until option == "q"
+until option == "q"
 
-# 	while option.to_i > commands.length
-# 		display_options(commands)
-# 		option = gets.chomp
-# 	end
+	while option.to_i > commands.length
+		display_options(commands)
+		option = gets.chomp
+	end
 
-# 	case option
-# 	when "1" 
-# 		puts "Please enter expected income:"
-# 		dollar_amount = gets.chomp
-# 		set_expected_income(db, user, dollar_amount)
-# 	when "2"
-# 		puts "Please enter income amount:"
-# 		dollar_amount = gets.chomp
-# 		add_to_income(db, user, dollar_amount)
-# 	when "3"
-# 		puts "Please enter expense amount:"
-# 		dollar_amount = gets.chomp
-# 		add_to_expenses(db, user, dollar_amount)
-# 	when "4"
-# 		puts "How much would you like to pull from your cache?"
-# 		dollar_amount = gets.chomp.to_i
-# 		if dollar_amount > current_cache(db, user)
-# 			puts "I'm sorry, you do not have that much in your cache."
-# 		else
-# 			#method to pull from cache, followed by add_to_income
-# 			pull_from_cache(db, user, dollar_amount)
-# 			add_to_income(db, user, dollar_amount)
-# 		end
-# 	when "5"
-# 		puts "Current Cache: $#{current_cache(db, user)}"
-# 	when "6"
-# 		puts "Current Monthly Income: $#{current_income(db, user)}"
-# 	when "7"
-# 		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
-# 	when "8"
-# 		puts "Current Expected income: $#{expected_income(db, user)}"
-# 		puts "Current Monthly Income: $#{current_income(db, user)}"
-# 		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
-# 		puts "Current Cache: $#{current_cache(db, user)}"
-# 		# % category here??
-# 	when "9"
-# 		# ADD NEW CATEGORY
-# 	end
-# 	puts "\n"
-# 	display_options(commands)
-# 	option = gets.chomp
-# 	puts "\n"
-# end
+	case option
+	when "1" 
+		puts "Please enter expected income:"
+		dollar_amount = gets.chomp
+		set_expected_income(db, user, dollar_amount)
+	when "2"
+		puts "Please enter income amount:"
+		dollar_amount = gets.chomp
+		add_to_income(db, user, dollar_amount)
+	when "3"
+		puts "Please enter expense amount:"
+		dollar_amount = gets.chomp
+		add_to_expenses(db, user, dollar_amount)
+		puts "Would you like to categorize this expense? (y/n)"
+		categorize = gets.chomp
+		if categorize[0].downcase == "y"
+	when "4"
+		puts "How much would you like to pull from your cache?"
+		dollar_amount = gets.chomp.to_i
+		if dollar_amount > current_cache(db, user)
+			puts "I'm sorry, you do not have that much in your cache."
+		else
+			#method to pull from cache, followed by add_to_income
+			pull_from_cache(db, user, dollar_amount)
+			add_to_income(db, user, dollar_amount)
+		end
+	when "5"
+		puts "Current Cache: $#{current_cache(db, user)}"
+	when "6"
+		puts "Current Monthly Income: $#{current_income(db, user)}"
+	when "7"
+		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
+	when "8"
+		puts "Current Expected income: $#{expected_income(db, user)}"
+		puts "Current Monthly Income: $#{current_income(db, user)}"
+		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
+		puts "Current Cache: $#{current_cache(db, user)}"
+		# % category here??
+	when "9"
+		display_categories(db)
+		puts "Please enter the name of the category you would like to add. ('q' to quit)"
+		category = gets.chomp
+		until category == "q"
+			add_category(db, category)
+			puts "Category #{category} added.  Add another, or 'q' to quit."
+			category = gets.chomp
+		end
+	end
+	puts "\n"
+	display_options(commands)
+	option = gets.chomp
+	puts "\n"
+end
 
-# puts "Thank you for using Cache!"
+puts "Thank you for using Cache!"
