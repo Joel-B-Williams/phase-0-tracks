@@ -5,6 +5,7 @@ require 'date'
 db = SQLite3::Database.new("cache.db")
 
 #create table if not already existant
+
 create_tables = '
 CREATE TABLE IF NOT EXISTS users(
 id INTEGER PRIMARY KEY,
@@ -33,7 +34,9 @@ db.execute_batch(create_tables)
 #Method to add new user
 def add_user(db, user_name)
 add_user = '
+
 	INSERT INTO users 
+
 	(name, cache, expected_income, actual_income, expenses, month)
 	VALUES (?,0,0,0,0,1)'
 	db.execute(add_user, [user_name]) 
@@ -59,11 +62,14 @@ def add_category(db, category)
 	db.execute(new_category, [category])
 end
 
+
 # --methods to retreive and manipulate table data--
 # method to set expected income 
 def set_expected_income(db, user_name, dolla_dolla_bills_yall)
 	expected_income = '
+
 	UPDATE users SET expected_income = ?
+
 	WHERE name = ?' 
 	db.execute(expected_income, [dolla_dolla_bills_yall, user_name]) 
 end
@@ -71,7 +77,9 @@ end
 # method to retrieve expected income
 def expected_income(db, user_name)
 	retrieve_expected_income = '
+
 	SELECT expected_income FROM users
+
 	WHERE name = ?'
 	expected_income = db.execute(retrieve_expected_income, [user_name])[0][0]
 end
@@ -79,7 +87,9 @@ end
 # method to check current actual income
 def current_income(db, user_name)	
 	retrieve_income = '
+
 	SELECT actual_income FROM users
+
 	WHERE name = ?'
 	income = db.execute(retrieve_income, [user_name])[0][0]
 end
@@ -89,6 +99,7 @@ def add_to_income(db, user_name, dolla_dolla_bills_yall)
 	new_income_total = (dolla_dolla_bills_yall.to_i + current_income(db, user_name))
 	change_income = '
 	UPDATE users 
+
 	SET actual_income = ?
 	WHERE name = ?'
 	db.execute(change_income, [new_income_total, user_name])
@@ -97,7 +108,9 @@ end
 # method to check current expenses
 def current_expenses(db, user_name)
 	retrieve_expenses = '
+
 	SELECT expenses FROM users
+
 	WHERE name = ?'
 	expenses = db.execute(retrieve_expenses, [user_name])[0][0]
 end
@@ -106,11 +119,14 @@ end
 def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
 	new_expenses_total = (dolla_dolla_bills_yall.to_i + current_expenses(db, user_name))
 	change_expenses = '
+
 	UPDATE users
+
 	SET expenses = ?
 	WHERE name = ?'
 	db.execute(change_expenses, [new_expenses_total, user_name])
 end
+
 
 # Method to categorize expenses
 def categorize_expense(db, user_id, category_id, dolla_dolla_bills_yall)
@@ -153,6 +169,7 @@ end
 def current_cache(db, user_name)
 	retrieve_cache = '
 	SELECT cache FROM users
+
 	WHERE name = ?'
 	cache = db.execute(retrieve_cache, [user_name])[0][0]
 end
@@ -168,7 +185,9 @@ end
 def add_to_cache(db, user_name)
 	cache_bonus = (current_cache(db, user_name) + extra_cash(db, user_name))
 	add_bonus = '
+
 	UPDATE users 
+
 	SET cache = ?
 	WHERE name = ?'
 	db.execute(add_bonus, [cache_bonus, user_name])
@@ -179,7 +198,9 @@ def pull_from_cache(db, user_name, dolla_dolla_bills_yall)
 	#set cache = current value - arg, then add arg to income()
 	new_cache = (current_cache(db, user_name) - dolla_dolla_bills_yall.to_i)
 	update_cache = '
+
 	UPDATE users 
+
 	SET cache = ?
 	WHERE name = ?'
 	db.execute(update_cache, [new_cache, user_name])
@@ -197,6 +218,7 @@ end
 # method to reset expenses
 def reset_expenses(db, user_name)
 	reset = '
+
 	UPDATE users
 	SET expenses = 0
 	WHERE name = ?;
@@ -208,6 +230,7 @@ def reset_expenses(db, user_name)
 end
 
 # method to reset row/add to cache
+
 def monthly_reset(db, user_name)
  add_to_cache(db, user_name)
  reset_actual_income(db, user_name)
@@ -224,7 +247,9 @@ end
 # method to check month column
 def check_month(db, user_name)
 	stored_month = '
+
 	SELECT month FROM users
+
 	WHERE name = ?'
 	month = db.execute(stored_month, [user_name])[0][0]
 end
@@ -232,10 +257,12 @@ end
 # method to change month column
 def change_month(db, user_name)
 	dec_to_jan = '
+
 	UPDATE users SET month = 1
 	WHERE name = ?'
 	next_month = '
 	UPDATE users SET month = ?
+
 	WHERE name = ?'
 	if check_month(db, user_name) == 12
 		db.execute(dec_to_jan, [user_name])
@@ -246,7 +273,9 @@ def change_month(db, user_name)
 end
 
 
+
 # # DRIVER CODE ish 
+
 puts "What is your name, humanoid?"
 user = gets.chomp
 puts "Do you already have an active account? (y/n)"
@@ -302,6 +331,7 @@ until option == "q"
 			cat_id = gets.chomp
 			categorize_expense(db, return_id(db, user), cat_id, dollar_amount)
 		end
+
 	when "4"
 		puts "How much would you like to pull from your cache?"
 		dollar_amount = gets.chomp.to_i
@@ -339,6 +369,7 @@ until option == "q"
 			puts "Category #{category} added.  Add another, or 'q' to quit."
 			category = gets.chomp
 		end
+r
 	end
 	puts "\n"
 	display_options(commands)
