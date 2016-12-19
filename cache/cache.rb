@@ -112,6 +112,22 @@ def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
 	db.execute(change_expenses, [new_expenses_total, user_name])
 end
 
+# Method to return user id
+def return_id(db, user_name)
+	retrieve_id = '
+	SELECT id FROM users
+	WHERE name = ?'
+	id = db.execute(retrieve_id, [user_name])
+end
+
+# method to categorize expenses
+def categorize_expense(db, user_id, category_id, dolla_dolla_bills_yall)
+	categorize = '
+	INSERT INTO expenses (user_id, category_id, amount)
+	VALUES (?, ?, ?)'
+	db.execute(categorize, [user_id, category_id, dolla_dolla_bills_yall])
+end
+
 # method to check current cache
 def current_cache(db, user_name)
 	retrieve_cache = '
@@ -256,6 +272,11 @@ until option == "q"
 		puts "Would you like to categorize this expense? (y/n)"
 		categorize = gets.chomp
 		if categorize[0].downcase == "y"
+			puts "Please choose a category. (by number)"
+			display_categories(db)
+			cat_id = gets.chomp
+			categorize_expense(db, return_id(db, user), cat_id, dollar_amount)
+		end
 	when "4"
 		puts "How much would you like to pull from your cache?"
 		dollar_amount = gets.chomp.to_i
@@ -272,12 +293,12 @@ until option == "q"
 		puts "Current Monthly Income: $#{current_income(db, user)}"
 	when "7"
 		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
+		# % category here??
 	when "8"
 		puts "Current Expected income: $#{expected_income(db, user)}"
 		puts "Current Monthly Income: $#{current_income(db, user)}"
 		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
 		puts "Current Cache: $#{current_cache(db, user)}"
-		# % category here??
 	when "9"
 		display_categories(db)
 		puts "Please enter the name of the category you would like to add. ('q' to quit)"
