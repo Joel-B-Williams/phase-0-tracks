@@ -178,9 +178,15 @@ def reset_expenses(db, user_name)
 	reset = '
 	UPDATE users
 	SET expenses = 0
-	WHERE name = ?'
-	db.execute(reset, [user_name])
+	WHERE name = ?;
+
+	DELETE * FROM expenses
+	WHERE user_id = ?'
+
+	db.execute_batch(reset, [user_name, return_id(db, user_name)])
 end
+
+# Method to reset monthly expenses
 
 # method to reset row/add to cache
 def monthly_reset(db, user_name)
