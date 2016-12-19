@@ -112,6 +112,22 @@ def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
 	db.execute(change_expenses, [new_expenses_total, user_name])
 end
 
+# Method to display sorted monthly expenses
+def current_categorized_expenses(db, user_name)
+	retrieve_categorized_expenses = '
+	SELECT categories.name, amount FROM expenses
+	JOIN users ON expenses.user_id = users.id
+	JOIN categories ON expenses.category_id = categories.id
+	WHERE users.name = ?
+	ORDER BY categories.name ASC'
+	categorized_expenses = db.execute(retrieve_categorized_expenses, [user_name])
+end
+
+# Method to display current categorized expenses
+def display_categorized_expenses(db, user_name)
+	current_categorized_expenses(db, user_name).each {|expense| puts "#{expense[0]}: $#{expense[1]}"}
+end
+
 # Method to return user id
 def return_id(db, user_name)
 	retrieve_id = '
@@ -180,13 +196,11 @@ def reset_expenses(db, user_name)
 	SET expenses = 0
 	WHERE name = ?;
 
-	DELETE * FROM expenses
+	DELETE FROM expenses
 	WHERE user_id = ?'
 
 	db.execute_batch(reset, [user_name, return_id(db, user_name)])
 end
-
-# Method to reset monthly expenses
 
 # method to reset row/add to cache
 def monthly_reset(db, user_name)
@@ -227,7 +241,7 @@ def change_month(db, user_name)
 end
 
 
-# DRIVER CODE ish 
+# # DRIVER CODE ish 
 puts "What is your name, humanoid?"
 user = gets.chomp
 puts "Do you already have an active account? (y/n)"
@@ -299,7 +313,7 @@ until option == "q"
 		puts "Current Monthly Income: $#{current_income(db, user)}"
 	when "7"
 		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
-		# % category here??
+		display_categorized_expenses(db, user)
 	when "8"
 		puts "Current Expected income: $#{expected_income(db, user)}"
 		puts "Current Monthly Income: $#{current_income(db, user)}"
