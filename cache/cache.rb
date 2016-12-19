@@ -112,20 +112,22 @@ def add_to_expenses(db, user_name, dolla_dolla_bills_yall)
 	db.execute(change_expenses, [new_expenses_total, user_name])
 end
 
+# Method to categorize expenses
+def categorize_expense(db, user_id, category_id, dolla_dolla_bills_yall)
+	categorize = '
+	INSERT INTO expenses (user_id, category_id, amount)
+	VALUES (?, ?, ?)'
+	db.execute(categorize, [user_id, category_id, dolla_dolla_bills_yall])
+end
+
 # Method to display sorted monthly expenses
 def current_categorized_expenses(db, user_name)
 	retrieve_categorized_expenses = '
 	SELECT categories.name, amount FROM expenses
 	JOIN users ON expenses.user_id = users.id
 	JOIN categories ON expenses.category_id = categories.id
-	WHERE users.name = ?
-	ORDER BY categories.name ASC'
+	WHERE users.name = ?'
 	categorized_expenses = db.execute(retrieve_categorized_expenses, [user_name])
-end
-
-# Method to display current categorized expenses
-def display_categorized_expenses(db, user_name)
-	current_categorized_expenses(db, user_name).each {|expense| puts "#{expense[0]}: $#{expense[1]}"}
 end
 
 # Method to return user id
@@ -137,11 +139,14 @@ def return_id(db, user_name)
 end
 
 # method to categorize expenses
-def categorize_expense(db, user_id, category_id, dolla_dolla_bills_yall)
-	categorize = '
-	INSERT INTO expenses (user_id, category_id, amount)
-	VALUES (?, ?, ?)'
-	db.execute(categorize, [user_id, category_id, dolla_dolla_bills_yall])
+def category_totals(db, user_name, number)
+	retrieve_totals = '
+	SELECT categories.name, SUM(amount) FROM expenses
+	JOIN users ON expenses.user_id = users.id
+	JOIN categories ON expenses.category_id = categories.id
+	WHERE categories.id = ?
+	AND users.name = ?'
+	totals = db.execute(retrieve_totals, [number, user_name])[0]
 end
 
 # method to check current cache
@@ -313,7 +318,13 @@ until option == "q"
 		puts "Current Monthly Income: $#{current_income(db, user)}"
 	when "7"
 		puts "Current Monthly Expenses: $#{current_expenses(db, user)}"
-		display_categorized_expenses(db, user)
+		#++SUPER GROSS BUT I"M TIRED++
+		category_count = db.execute('SELECT COUNT(*) FROM categories')[0][0]
+		i = 1
+		category_count.times do
+			puts "#{category_totals(db, user, i)[0]}: $#{category_totals(db, user, i)[1]}" if category_totals(db, user, i)[0] != nil
+			i += 1
+		end
 	when "8"
 		puts "Current Expected income: $#{expected_income(db, user)}"
 		puts "Current Monthly Income: $#{current_income(db, user)}"
