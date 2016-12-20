@@ -8,6 +8,7 @@ var remButton = buttDiv.children[1];
 
 // Event listner to Add button for 'click'
 addButton.addEventListener('click', addParagraph);
+remButton.addEventListener('click', remParagraph);
 
 // Create new paragraph element
 // Add text to ^^
@@ -20,3 +21,7 @@ function addParagraph(){
 
 
 // Function to remove last child of the div that holds the paragraphs
+function remParagraph(){
+	var lastP = paraDiv.lastElementChild;
+	paraDiv.removeChild(lastP);
+}
