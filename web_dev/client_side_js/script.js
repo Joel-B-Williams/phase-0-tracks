@@ -23,5 +23,5 @@ function addParagraph(){
 // Function to remove last child of the div that holds the paragraphs
 function remParagraph(){
 	var lastP = paraDiv.lastElementChild;
-	paraDiv.removeChild(lastP);
+	if (lastP) paraDiv.removeChild(lastP);
 }
