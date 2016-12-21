@@ -10,3 +10,14 @@ $(document).ready(function(){
 	})
 })
 
+$(document).ready(function(){
+	$('#one').click(function(){
+		$('#first').animate({height: "50px"})
+	})
+})
+
+$(document).ready(function(){
+	$('#two').click(function(){
+		$('#second').animate({width: "50px"})
+	})
+})
