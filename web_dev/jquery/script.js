@@ -18,6 +18,6 @@ $(function(){
 
 $(function(){
 	$('div button:last-child').click(function(){
-		$('#second').animate({width: "50px"})
+		$('#second').animate({borderRadius: "100px"})
 	})
 })
