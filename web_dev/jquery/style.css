@@ -1,0 +1,13 @@
+.shape {
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	background-color: green;
+	border: solid black 3px;
+}
+
+button {
+	width: 100px;
+	border: solid black 3px;
+	margin-right: 10px;
+}
