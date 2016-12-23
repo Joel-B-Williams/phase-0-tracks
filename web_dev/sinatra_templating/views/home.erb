@@ -8,6 +8,7 @@
   <p>Welcome to the student management system.</p>
   <p>Click <a href="students/new">here</a> to create a new student.</p>
   <p>Click <a href="students/old">here</a> to see a list of really old people.</p>
+  <p>Click <a href="students/remove">here</a> to remove a student.</p>
   <ul>
     <% @students.each do |student| %>
       <li><%= student['name'] %>, <%= student['age'] %></li>
