@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Senior Developers</title>
+</head>
+<body>
+<p>Return <a href="/">Home</a></p>
+	<ul>
+	<%@students.each do |student| %>
+		<% if student['age'].to_i > 79 %>
+		<li><%=student['name']%>, <%=student['age']%></li>
+		<%end%>
+	<%end%>
+	</ul>
+</body>
+</html>

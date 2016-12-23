@@ -24,4 +24,19 @@ post '/students' do
   redirect '/'
 end
 
+#list students over 80
+get '/students/old' do
+	@students = db.execute("SELECT * FROM students")
+	erb :old_students
+end
+
+get '/students/remove' do
+	erb :remove_student
+end
+
+post '/students/removed' do
+	db.execute("DELETE FROM students WHERE name=?", [params['name']])
+	redirect '/'
+end
+
 # add static resources
